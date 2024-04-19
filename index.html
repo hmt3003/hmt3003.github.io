@@ -1,206 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Huỳnh Mạnh Tiến</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-</head>
-<body>
-	<div id="dragBox">
-		<div class="spinBox" id="spinBox">
-			<script>
-				for (let i = 1; i <= 19; i++) {
-					document.write("<img src=\"img/" + i + ".jpg\"/>");
-				}
-			</script>
-		</div>
-		
-		<div class="spinBox" id="spinBox2">
-			<script>
-				for (let i = 20; i <= 38; i++) {
-					document.write("<img src=\"img/" + i + ".jpg\"/>");
-				}
-			</script>
-		</div>
-		
-		
-		<div class="spinBox" id="spinBox3">
-			<script>
-				for (let i = 39; i <= 57; i++) {
-					document.write("<img src=\"img/" + i + ".jpg\"/>");
-				}
-			</script>
-		</div>
-	</div>
-	<style>
-		* {
-			margin: 0;
-			padding: 0;
-		}
-		
-		html, body {
-			height: 100%;
-			touch-action: none;
-		}
-		
-		body {
-			overflow: hidden;
-			display: flex;
-			perspective: 1000px;
-			background: #111;
-		}
-		
-		#dragBox,
-		.spinBox {
-			position: relative;
-			display: flex;
-			margin: auto;
-			transform-style: preserve-3d;
-			transform: rotateX(-10deg);
-		}
-		
-		.spinBox {
-			width: 120px;
-			height:	140px;
-			animation: spin 60s infinite linear;
-		}
-		
-		#spinBox2 {
-			position: absolute;
-			top: 120%;
-		}
-		
-		#spinBox3 {
-			position: absolute;
-			top: -120%;
-		}
-		
-		#dragBox img {
-			transform-style: preserve-3d;
-			position: absolute;
-			left: 0;
-			top: 0;
-			height: 100%;
-			box-shadow: 0 0 8px #fff;
-		}
-		
-		#dragBox img:hover {
-			box-shadow: 0 0 15px #fff;
-		}
-	
-		@keyframes spin {
-			from {
-				transform: rotateY(0deg);
-			}
-			
-			to {
-				transform: rotateY(360deg);
-			}
-		}
-	</style>
-	<script>
-		let radius = 560;
-		
-		let outDom = document.getElementById("dragBox");
-		
-		let spinDom = document.getElementById("spinBox");
-		let spinDom2 = document.getElementById("spinBox2");
-		let spinDom3 = document.getElementById("spinBox3");
-		
-		let aImg = spinDom.getElementsByTagName("img");
-		let aImg2 = spinDom2.getElementsByTagName("img");
-		let aImg3 = spinDom3.getElementsByTagName("img");
-		
-		let aEle = [...aImg];
-		let aEle2 = [...aImg2];
-		let aEle3 = [...aImg3];
-		
-		function setStyle(delayTime, dom, i, len) {
-			dom.style.transform = "rotateY(" + (i * (360/len)) +
-								"deg) translateZ(" + radius + "px)";
-			dom.style.transform = "transform 1s";
-			dom.style.transitionDelay = delayTime || (len -i) / 4 + "s";
-		}
-		function init(delayTime) {
-			for (let i = 0; i < aEle.length; i++) {
-				setStyle(delayTime, aEle[i], i, aEle.length)
-			}	
-			for (let i = 0; i < aEle2.length; i++) {
-				setStyle(delayTime, aEle2[i], i, aEle2.length)
-			}	
-			for (let i = 0; i < aEle3.length; i++) {
-				setStyle(delayTime, aEle3[i], i, aEle3.length)
-			}	
-		}
-		setTimeout(init, 500);
-		
-		document.onmousewheel = function (e) {
-			e || e.window.event;
-			let d = e.wheelDelta / 20 || -e.detail;
-			radius += d;
-			init(1);
-		}
-		
-		function playSpin(yes) {
-			spinDom.style.animationPlayState = (yes ? 'running' : 'paused');
-		}
-
-		function changeRotate(obj) {
-			if (tY > 180) {
-				tY -= 180;
-			}
-			if (tY <= 0) {
-				obj.style.transform = "rotateX(" + (-tY) + "deg) rotateY(" + (tX) + "deg)";
-			}
-		}
-
-		let startX, startY, endX, endY, tX = 0, tY = 10, desX = 0,
-		desY = 0;
-
-		document.onpointerdown = function(e) {
-			clearInterval(outDom.timer);
-			e = e || window.event;
-			startX = e.clientX;
-			startY = e.clientY;
-			
-			this.onpointermove = function(e) {
-				playSpin(false);
-				
-				e = e || window.event;
-				
-				endX = e.clientX;
-				endY = e.clientY;
-				
-				desX = endX - startX;
-				desY = endY - startY;
-				
-				tX += desX * 0.1;
-				tY += desY * 0.1;
-				
-				changeRotate(outDom);
-				
-				startX = endX;
-				startY = endY;
-			}
-			
-			this.onpointerup = function (e) {
-				outDom.timer = setInterval(function() {
-					desX *= 0.95;
-					desY *= 0.95;
-					tX += desX * 0.1;
-					tY += desY * 0.1;
-					changeRotate(outDom);
-					playSpin(false);
-					if (Math.abs(desX) < 0.5 && Math.abs(desY) < 0.5) {
-						clearInterval(outDom.timer);
-						playSpin(true);
-					}
-					
-				})
-				this.onpointermove = this.onpointerup = null;
-			}
-			return false;
-		}
-	</script>
-</body>
+   <head>
+      <title>Huỳnh Mạnh Tiến</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+   </head>
+   <body>
+      <div id="dragBox">
+         <div class="spinBox" id="spinBox">
+            <script>
+               for (let i = 1; i <= 19; i++) {
+               	document.write("<img src=\"img/" + i + ".jpg\"/>");
+               }
+            </script>
+         </div>
+         <div class="spinBox" id="spinBox2">
+            <script>
+               for (let i = 20; i <= 38; i++) {
+               	document.write("<img src=\"img/" + i + ".jpg\"/>");
+               }
+            </script>
+         </div>
+         <div class="spinBox" id="spinBox3">
+            <script>
+               for (let i = 39; i <= 57; i++) {
+               	document.write("<img src=\"img/" + i + ".jpg\"/>");
+               }
+            </script>
+         </div>
+      </div>
+      <style>
+         * {
+         margin: 0;
+         padding: 0;
+         }
+         html, body {
+         height: 100%;
+         touch-action: none;
+         }
+         body {
+         overflow: hidden;
+         display: flex;
+         perspective: 1000px;
+         background: #111;
+         }
+         #dragBox,
+         .spinBox {
+         position: relative;
+         display: flex;
+         margin: auto;
+         transform-style: preserve-3d;
+         transform: rotateX(-10deg);
+         }
+         .spinBox {
+         width: 120px;
+         height:	140px;
+         animation: spin 60s infinite linear;
+         }
+         #spinBox2 {
+         position: absolute;
+         top: 120%;
+         }
+         #spinBox3 {
+         position: absolute;
+         top: -120%;
+         }
+         #dragBox img {
+         transform-style: preserve-3d;
+         position: absolute;
+         left: 0;
+         top: 0;
+         height: 100%;
+         box-shadow: 0 0 8px #fff;
+         }
+         #dragBox img:hover {
+         box-shadow: 0 0 15px #fff;
+         }
+         @keyframes spin {
+         from {
+         transform: rotateY(0deg);
+         }
+         to {
+         transform: rotateY(360deg);
+         }
+         }
+      </style>
+      <script>
+         let radius = 560;
+         
+         let outDom = document.getElementById("dragBox");
+         
+         let spinDom = document.getElementById("spinBox");
+         let spinDom2 = document.getElementById("spinBox2");
+         let spinDom3 = document.getElementById("spinBox3");
+         
+         let aImg = spinDom.getElementsByTagName("img");
+         let aImg2 = spinDom2.getElementsByTagName("img");
+         let aImg3 = spinDom3.getElementsByTagName("img");
+         
+         let aEle = [...aImg];
+         let aEle2 = [...aImg2];
+         let aEle3 = [...aImg3];
+         
+         function setStyle(delayTime, dom, i, len) {
+         	dom.style.transform = "rotateY(" + (i * (360/len)) +
+         						"deg) translateZ(" + radius + "px)";
+         	dom.style.transform = "transform 1s";
+         	dom.style.transitionDelay = delayTime || (len -i) / 4 + "s";
+         }
+         function init(delayTime) {
+         	for (let i = 0; i < aEle.length; i++) {
+         		setStyle(delayTime, aEle[i], i, aEle.length)
+         	}	
+         	for (let i = 0; i < aEle2.length; i++) {
+         		setStyle(delayTime, aEle2[i], i, aEle2.length)
+         	}	
+         	for (let i = 0; i < aEle3.length; i++) {
+         		setStyle(delayTime, aEle3[i], i, aEle3.length)
+         	}	
+         }
+         setTimeout(init, 500);
+         
+         document.onmousewheel = function (e) {
+         	e || e.window.event;
+         	let d = e.wheelDelta / 20 || -e.detail;
+         	radius += d;
+         	init(1);
+         }
+         
+         function playSpin(yes) {
+         	spinDom.style.animationPlayState = (yes ? 'running' : 'paused');
+         }
+         
+         function changeRotate(obj) {
+         	if (tY > 180) {
+         		tY -= 180;
+         	}
+         	if (tY <= 0) {
+         		obj.style.transform = "rotateX(" + (-tY) + "deg) rotateY(" + (tX) + "deg)";
+         	}
+         }
+         
+         let startX, startY, endX, endY, tX = 0, tY = 10, desX = 0,
+         desY = 0;
+         
+         document.onpointerdown = function(e) {
+         	clearInterval(outDom.timer);
+         	e = e || window.event;
+         	startX = e.clientX;
+         	startY = e.clientY;
+         	
+         	this.onpointermove = function(e) {
+         		playSpin(false);
+         		
+         		e = e || window.event;
+         		
+         		endX = e.clientX;
+         		endY = e.clientY;
+         		
+         		desX = endX - startX;
+         		desY = endY - startY;
+         		
+         		tX += desX * 0.1;
+         		tY += desY * 0.1;
+         		
+         		changeRotate(outDom);
+         		
+         		startX = endX;
+         		startY = endY;
+         	}
+         	
+         	this.onpointerup = function (e) {
+         		outDom.timer = setInterval(function() {
+         			desX *= 0.95;
+         			desY *= 0.95;
+         			tX += desX * 0.1;
+         			tY += desY * 0.1;
+         			changeRotate(outDom);
+         			playSpin(false);
+         			if (Math.abs(desX) < 0.5 && Math.abs(desY) < 0.5) {
+         				clearInterval(outDom.timer);
+         				playSpin(true);
+         			}
+         			
+         		})
+         		this.onpointermove = this.onpointerup = null;
+         	}
+         	return false;
+         }
+      </script>
+   </body>
 </html>
